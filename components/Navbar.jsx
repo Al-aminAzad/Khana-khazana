@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import LoginOut from "./Auth/LoginOut"
 
 const Navbar = () => {
     return (
@@ -10,8 +11,9 @@ const Navbar = () => {
                 </Link>
 
                 <ul className="flex gap-4 text-sm text-gray-500">
+
                     <li className="py-2 active">
-                        <Link href="./index.html">Home</Link>
+                        <Link href="/">Home</Link>
                     </li>
 
                     <li className="py-2">
@@ -21,10 +23,7 @@ const Navbar = () => {
                     <li className="py-2">
                         <Link href="./index.html">About us</Link>
                     </li>
-
-                    <li className="py-2 bg-[#eb4a36] px-6 rounded-md text-white content-center">
-                        <Link href="./login.html">Login</Link>
-                    </li>
+                    <LoginOut />
                 </ul>
             </div>
         </nav>
