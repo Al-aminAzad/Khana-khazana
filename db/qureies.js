@@ -1,6 +1,7 @@
 import { recipeModel } from "@/models/recipe"
 import { userModel } from "@/models/user";
 import { replaceMongoIdInArray, replaceMongoIdInObject } from "@/utils/data-util"
+import mongoose from "mongoose";
 
 export const getAllRecipes = async () => {
     const recipes = await recipeModel.find().lean();
@@ -13,7 +14,11 @@ export const getRecipeById = async (id) => {
 }
 
 export const createUser = async (user) => {
-    return await userModel.create(user)
+    const newUser = {
+        ...user,
+        favourites: [] // Explicitly set favourites to an empty array
+    };
+    return await userModel.create(newUser)
 }
 
 export const findUserByCredential = async (credential) => {
@@ -22,4 +27,17 @@ export const findUserByCredential = async (credential) => {
         return replaceMongoIdInObject(user)
     }
     return null
+}
+
+export const updateFavourites = async (userId, recipeId) => {
+    const user = await userModel.findById(userId)
+    if (user) {
+        const recipe = user?.favourites?.find(id => id === recipeId)
+        if (recipe) {
+            user.favourites.pull(new mongoose.Types.ObjectId(recipeId))
+        } else {
+            user.favourites.push(new mongoose.Types.ObjectId(recipeId))
+        }
+        user.save()
+    }
 }

@@ -1,6 +1,7 @@
 'use server'
 
-import { createUser, findUserByCredential } from "@/db/qureies"
+import { createUser, findUserByCredential, updateFavourites } from "@/db/qureies"
+import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
 export const registerUser = async (formData) => {
@@ -19,6 +20,13 @@ export const performLogin = async (formData) => {
     } catch (error) {
         throw error
     }
+}
 
-
+export const performFavorites = async (userId,recipeId)=>{
+    try {
+        await updateFavourites(userId, recipeId)
+        revalidatePath(`/details/${recipeId}`)
+    } catch (error) {
+        throw error
+    }
 }

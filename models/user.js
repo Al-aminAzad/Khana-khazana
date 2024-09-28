@@ -15,6 +15,10 @@ const schema = new Schema({
     password: {
         required: true,
         type: String
+    },
+    favourites: { 
+        type: [String],
+        default:[] 
     }
    
 })
